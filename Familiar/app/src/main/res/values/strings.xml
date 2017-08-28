@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Familiar</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_info">Sobre</string>
+    <string name="action_notify">Notificações</string>
+    <string name="action_remove">Deletar</string>
+    <string name="nome">Nome</string>
+    <string name="Telefone">Telefone</string>
+    <string name="familiarSalvo">Seu familiar foi salvo !</string>
+
+    <string name="notiTitle">Hoje tem aniversário !!</string>
+    <string name="notiBody">Dê os parabéns !!</string>
+
+    <string name="folder_package">/FamiliarApp</string>
+
+
+    <string name="selecioneParentesco">Selecione o parentesco</string>
+    <string name="esposoa">Esposo(a)</string>
+    <string name="pai">Pai</string>
+    <string name="filhoa">Filho(a)</string>
+    <string name="tioa">Tio(a)</string>
+    <string name="sobrinhoa">Sobrinho(a)</string>
+    <string name="mae">Mãe</string>
+    <string name="genro">Genro</string>
+    <string name="nora">Nora</string>
+    <string name="neto">Neto</string>
+    <string name="amigo">Amigo(a)</string>
+    <string name="title_activity_visualizar">VisualizarActivity</string>
+</resources>
