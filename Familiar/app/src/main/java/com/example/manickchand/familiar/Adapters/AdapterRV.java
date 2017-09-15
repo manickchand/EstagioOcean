@@ -20,6 +20,7 @@ import com.example.manickchand.familiar.Interfaces.ReciclerViewOnClickListenerHa
 import com.example.manickchand.familiar.MainActivity;
 import com.example.manickchand.familiar.R;
 import com.example.manickchand.familiar.model.Familiar;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
@@ -68,8 +69,11 @@ public class AdapterRV extends RecyclerView.Adapter<AdapterRV.MyViewHolder> {
                 bt = loadBitmap(mlist.get(position).getId());
             }
 
-        if(bt==null){holder.iv_familiar.setImageResource(R.drawable.ic_face_black_48dp);}
-        else holder.iv_familiar.setImageBitmap(bt);
+            try{Picasso.with(mcontext).load(mlist.get(position).getFoto()).into(holder.iv_familiar);}
+            catch (Exception E){}
+
+       // if(bt==null){holder.iv_familiar.setImageResource(R.drawable.ic_face_black_48dp);}
+       // else holder.iv_familiar.setImageBitmap(bt);
 
     }
 

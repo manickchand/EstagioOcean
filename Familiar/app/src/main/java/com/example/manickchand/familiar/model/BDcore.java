@@ -17,7 +17,9 @@ public class BDcore extends SQLiteOpenHelper {
 
     private static final String nomeBD = "Familiar";
     private static final String familiaresTabela = "Familiares";
-    private static final int versaoBD = 5;
+    private static final String usuarioTabela = "Usuario";
+    private static final String idTabela = "ID";
+    private static final int versaoBD = 13;
 
     // informacoes do bd
     public BDcore(Context context) {
@@ -36,12 +38,29 @@ public class BDcore extends SQLiteOpenHelper {
                 "telefone TEXT" +
                 " )";
         bd.execSQL(SQLCreateTableFamilia);
+
+        //tabela usuario
+        String SQLCreateTableUsuario = "CREATE TABLE "+usuarioTabela+" ("
+                +"id TEXT PRIMARY KEY, "
+                +"nome TEXT, "
+                +"email TEXT"
+                + " )";
+        bd.execSQL(SQLCreateTableUsuario);
+        //tabela familiares
+        String SQLCreateTablid = "CREATE TABLE "+idTabela+" (id TEXT PRIMARY KEY )";
+        bd.execSQL(SQLCreateTablid);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase bd, int i, int i1) {
         String drop = "DROP TABLE IF EXISTS "+familiaresTabela;
         bd.execSQL(drop);
+        String drop2 = "DROP TABLE IF EXISTS "+usuarioTabela;
+        bd.execSQL(drop2);
+
+        String drop3 = "DROP TABLE IF EXISTS "+idTabela;
+        bd.execSQL(drop3);
         onCreate(bd);
     }
 
@@ -145,6 +164,100 @@ public class BDcore extends SQLiteOpenHelper {
             return c.getInt(0)+1;
         }
         else{return 1;}
+    }
+
+
+    public void inserirUsuario(Usuario u){
+
+        SQLiteDatabase bd = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put("id", u.getId());
+        cv.put("nome", u.getNome());
+        cv.put("email",u.getEmail());
+
+
+        Log.i("addu","id "+u.getId());
+        Log.i("addu","nome "+u.getNome());
+        Log.i("addu","email "+u.getEmail());
+
+        bd.insert(usuarioTabela, null, cv);
+       // bd.close();
+    }
+
+    public Usuario getUsuario(){
+
+        SQLiteDatabase bd = getReadableDatabase();
+
+
+        Log.i("listau","ta em listar ");
+
+        String sqlListar = "SELECT * FROM "+ usuarioTabela;
+
+        Cursor c = bd.rawQuery(sqlListar, null);
+
+
+        if(c.moveToFirst()){
+            Usuario  u = new Usuario();
+                u.setId(c.getString(0));
+                u.setNome(c.getString(1));
+                u.setEmail(c.getString(2));
+            Log.i("listau","id "+u.getId());
+            Log.i("listau","nome "+u.getNome());
+            Log.i("listau","email "+u.getEmail());
+
+            return  u;
+        }
+
+        bd.close();
+        return null;
+    }
+
+
+    public void inseririd(String id){
+
+        SQLiteDatabase bd = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put("id", id);
+
+
+        bd.insert(idTabela, null, cv);
+        bd.close();
+    }
+
+    public String getidbd(){
+
+        SQLiteDatabase bd = getReadableDatabase();
+
+        String sqlListar = "SELECT * FROM "+ idTabela;
+
+        Cursor c = bd.rawQuery(sqlListar, null);
+
+        if(c.moveToFirst()){
+
+            String s = c.getString(0);
+
+            return  s;
+        }
+
+        bd.close();
+        return "";
+    }
+
+    public void logout(){
+        SQLiteDatabase bd = getReadableDatabase();
+
+        String sqlDelete = "DELETE FROM "+usuarioTabela;
+        String sqlDelete2 = "DELETE FROM "+familiaresTabela;
+        String sqlDelete3 = "DELETE FROM "+idTabela;
+
+        //deleta e fecha conexao
+        bd.execSQL(sqlDelete2);
+        bd.execSQL(sqlDelete);
+        bd.execSQL(sqlDelete3);
+
+        bd.close();
     }
 
 }

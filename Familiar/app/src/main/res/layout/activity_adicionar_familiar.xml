@@ -78,15 +78,36 @@
         android:layout_marginTop="20dp"
          />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:id="@+id/tv_enderecoAddFamiliar"
+        android:layout_below="@+id/tv_nascimentoAddFamiliar"
+        android:text="Endereço"
+        android:layout_marginTop="20dp"
+        />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Salvar"
         android:id="@+id/bt_Salvar"
-        android:layout_below="@+id/tv_nascimentoAddFamiliar"
+        android:layout_below="@+id/tv_enderecoAddFamiliar"
         android:background="@color/colorAccent"
         android:textColor="@color/white"
         android:layout_marginTop="20dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/iv_addFamiliar"
+        android:visibility="gone"
+         />
+
+
 
 
 </RelativeLayout>

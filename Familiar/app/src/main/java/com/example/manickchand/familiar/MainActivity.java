@@ -32,6 +32,16 @@ import com.example.manickchand.familiar.Adapters.AdapterRV;
 import com.example.manickchand.familiar.Interfaces.ReciclerViewOnClickListenerHack;
 import com.example.manickchand.familiar.model.BDcore;
 import com.example.manickchand.familiar.model.Familiar;
+import com.example.manickchand.familiar.model.FirebaseConfig;
+import com.example.manickchand.familiar.model.Usuario;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -46,6 +56,14 @@ public class MainActivity extends AppCompatActivity implements ReciclerViewOnCli
     private List<Familiar> lista = new ArrayList<Familiar>();
     private BDcore bDcore = new BDcore(this);
     private TextView tv;
+    private DatabaseReference reference;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    //private ValueEventListener valueEventListener;
+    private FirebaseAuth auth;
+    private  Usuario u;
+
+    FirebaseUser user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +87,16 @@ public class MainActivity extends AppCompatActivity implements ReciclerViewOnCli
         rv.setLayoutManager(llm);
 
         tv = (TextView)findViewById(R.id.tv);
+        user = auth.getInstance().getCurrentUser();
+
+        try{
+           // Log.e("user data","auth.getCurrentUser(): "+ user.getDisplayName());
+            Log.e("user data","auth.getCurrentUser().getDisplayName() : "+ user.getDisplayName());
+            Log.e("user data","auth.getCurrentUser().email : "+ user.getEmail());
+            Log.e("user data","auth.getCurrentUser().uid() : "+ user.getUid());
+            Log.e("user data","auth.getCurrentUser().photo() : "+ user.getPhotoUrl());
+        }
+        catch (Exception e){Log.e("Erro","Erro : "+e);}
 
         aniversarios();
 
@@ -80,13 +108,49 @@ public class MainActivity extends AppCompatActivity implements ReciclerViewOnCli
                 startActivity(intent);
             }
         });
+
+        Usuario usuario = bDcore.getUsuario();
+        Log.i("usuario firebase ","ta em get ");
+
+
+        reference = FirebaseConfig.getFirebase().child("Familiares").child(bDcore.getidbd());
+
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Familiar f = dataSnapshot.getValue(Familiar.class);
+                lista.add(f);
+                setAdapter();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Familiar f = dataSnapshot.getValue(Familiar.class);
+                lista.add(f);
+                setAdapter();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        lista = bDcore.listarFamiiares();
-        setAdapter();
     }
 
     @Override
@@ -100,13 +164,26 @@ public class MainActivity extends AppCompatActivity implements ReciclerViewOnCli
         int id = item.getItemId();
 
         if (id == R.id.action_info) {
-            showDialog();
+           // showDialog();
+
+            logout();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void logout(){
+
+        auth = FirebaseConfig.getAuth();
+        auth.signOut();
+
+       // bDcore.logout();
+
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     private void criarPasta(){
 

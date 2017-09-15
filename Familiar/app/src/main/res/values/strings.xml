@@ -27,4 +27,6 @@
     <string name="neto">Neto</string>
     <string name="amigo">Amigo(a)</string>
     <string name="title_activity_visualizar">VisualizarActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_criar_usuario">CriarUsuarioActivity</string>
 </resources>
